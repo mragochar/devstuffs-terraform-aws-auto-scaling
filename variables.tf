@@ -78,23 +78,6 @@ locals {
   }
 }
 
-# private route table id to nat gateway id mapping 
-locals {
-  private_route_table_ids = [
-    for key, rtb in aws_route_table.all :
-    rtb.id if startswith(key, "rt-private-")
-  ]
-
-  ngw_ids = [
-    for ngw in aws_nat_gateway.ngw : ngw.id
-  ]
-
-  private_route_table_ids_to_ngw_id = zipmap(
-    local.private_route_table_ids,
-    local.ngw_ids
-  )
-}
-
 # -----------------------
 # Launch Template
 # -----------------------
